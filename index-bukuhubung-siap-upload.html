@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buku Hubung Guru Wali - SMPN 13 Bandar Lampung</title>
+<style>
+  :root {
+    --primary: #1e5f8a;
+    --primary-dark: #144a6e;
+    --bg: #f4f6f9;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --border: #e2e5ea;
+    --danger: #dc2626;
+    --success: #16a34a;
+    --warning: #d97706;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  header h1 {
+    font-size: 18px;
+    margin: 0;
+  }
+  header .sub {
+    font-size: 12px;
+    opacity: 0.85;
+  }
+  #userInfo {
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  #userInfo button {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .container {
+    max-width: 960px;
+    margin: 20px auto;
+    padding: 0 16px 40px;
+  }
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    margin-bottom: 18px;
+    border: 1px solid var(--border);
+  }
+  .card h2 {
+    margin-top: 0;
+    font-size: 16px;
+    color: var(--primary-dark);
+  }
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 10px 0 4px;
+    color: var(--text);
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 9px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 14px;
+    background: #fff;
+    color: var(--text);
+    font-family: inherit;
+  }
+  textarea { resize: vertical; min-height: 60px; }
+  button.btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 14px;
+  }
+  button.btn:hover { background: var(--primary-dark); }
+  button.btn.secondary {
+    background: #fff;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+  }
+  button.btn.danger {
+    background: #fff;
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    padding: 5px 10px;
+    font-size: 12px;
+    margin-top: 0;
+  }
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .tab {
+    padding: 9px 16px;
+    border-radius: 8px;
+    background: #fff;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .tab.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  .view { display: none; }
+  .view.active { display: block; }
+  .grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 14px;
+  }
+  @media (max-width: 600px) {
+    .grid2 { grid-template-columns: 1fr; }
+  }
+  .catatan-item {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+    background: #fafbfc;
+  }
+  .catatan-item .row-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .catatan-item .tanggal {
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-size: 13px;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 6px;
+  }
+  .badge.hadir { background: #dcfce7; color: var(--success); }
+  .badge.izin, .badge.sakit { background: #fef3c7; color: var(--warning); }
+  .badge.alpa { background: #fee2e2; color: var(--danger); }
+  .catatan-item .field {
+    font-size: 13px;
+    margin: 3px 0;
+  }
+  .catatan-item .field b { color: var(--muted); font-weight: 600; }
+  #loginView {
+    max-width: 380px;
+    margin: 60px auto;
+  }
+  .msg {
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+  .msg.error { background: #fee2e2; color: var(--danger); }
+  .msg.success { background: #dcfce7; color: var(--success); }
+  .loading { color: var(--muted); font-size: 13px; padding: 10px 0; }
+  .empty { color: var(--muted); font-size: 13px; padding: 14px 0; text-align: center; }
+  .siswa-select-wrap {
+    display: flex;
+    gap: 8px;
+  }
+  .siswa-select-wrap select { flex: 1; }
+
+  /* ===== PERBAIKAN TAMPILAN LAYAR KECIL / HP ===== */
+  @media (max-width: 480px) {
+    header {
+      padding: 14px 14px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    header h1 { font-size: 16px; }
+    #userInfo {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .container {
+      margin: 12px auto;
+      padding: 0 10px 30px;
+    }
+    .card {
+      padding: 14px;
+      border-radius: 10px;
+    }
+    .card h2 { font-size: 15px; }
+    #loginView {
+      margin: 24px auto;
+      max-width: 100%;
+    }
+    /* Font 16px mencegah auto-zoom saat fokus input di iPhone */
+    input, select, textarea {
+      font-size: 16px;
+      padding: 11px 10px;
+    }
+    button.btn {
+      width: 100%;
+      padding: 13px 16px;
+      font-size: 15px;
+    }
+    button.btn.danger { width: auto; padding: 6px 10px; }
+    .tabs {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+      margin-left: -4px;
+      margin-right: -4px;
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+    .tab {
+      flex: 0 0 auto;
+      white-space: nowrap;
+      padding: 10px 14px;
+      font-size: 12.5px;
+    }
+    .catatan-item { padding: 12px; }
+    .catatan-item .row-top {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .catatan-item .tanggal { font-size: 12.5px; }
+    .catatan-item .field { font-size: 12.5px; }
+    .badge { font-size: 10.5px; }
+    label { font-size: 12.5px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>📘 Buku Hubung Guru Wali</h1>
+    <div class="sub">SMPN 13 Bandar Lampung</div>
+  </div>
+  <div id="userInfo" style="display:none;">
+    <span id="guruNameLabel"></span>
+    <button onclick="logout()">Keluar</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- LOGIN VIEW -->
+  <div id="loginView" class="view active">
+    <div class="card">
+      <h2>Login Wali Kelas</h2>
+      <label>Username</label>
+      <input type="text" id="loginUsername" placeholder="Username">
+      <label>Password</label>
+      <input type="password" id="loginPassword" placeholder="Password">
+      <button class="btn" style="width:100%" onclick="login()">Masuk</button>
+      <div id="loginMsg"></div>
+      <hr style="margin:20px 0;border:none;border-top:1px solid var(--border);">
+      <div style="text-align:center;font-size:13px;color:var(--muted);">
+        Orang tua/wali murid ingin lihat catatan anak? <br>
+        <button class="btn secondary" style="margin-top:10px;" onclick="showOrtuView()">Cek Buku Hubung Anak (tanpa login)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORTU VIEW (cek tanpa login) -->
+  <div id="ortuView" class="view">
+    <div class="card">
+      <h2>Cek Buku Hubung Anak</h2>
+      <label>Masukkan NISN Anak</label>
+      <input type="text" id="ortuNisn" placeholder="Contoh: 0091234567">
+      <button class="btn" onclick="cariCatatanOrtu()">Cari</button>
+      <button class="btn secondary" onclick="backToLogin()">Kembali ke Login</button>
+      <div id="ortuMsg"></div>
+    </div>
+    <div class="card" id="ortuResultCard" style="display:none;">
+      <h2 id="ortuNamaSiswa"></h2>
+      <div id="ortuCatatanList"></div>
+    </div>
+  </div>
+
+  <!-- MAIN APP (setelah login) -->
+  <div id="appView" class="view">
+    <div class="tabs" id="tabsBar">
+      <div class="tab active" data-tab="inputTab" onclick="switchTab('inputTab')">✍️ Input Catatan</div>
+      <div class="tab" data-tab="riwayatTab" onclick="switchTab('riwayatTab')">📋 Riwayat Kelas</div>
+      <div class="tab" data-tab="rekapTab" id="rekapTabBtn" onclick="switchTab('rekapTab')" style="display:none;">⚠️ Rekap Pelanggaran</div>
+    </div>
+
+    <!-- TAB INPUT -->
+    <div id="inputTab" class="tabview">
+      <div class="card">
+        <h2>Input Catatan Harian</h2>
+
+        <label>Kelas</label>
+        <select id="kelasSelect" onchange="loadSiswaKelas()"></select>
+
+        <label>Siswa</label>
+        <select id="siswaSelect"></select>
+
+        <label>Tanggal</label>
+        <input type="date" id="tanggalInput">
+
+        <div class="grid2">
+          <div>
+            <label>Kehadiran</label>
+            <select id="kehadiranInput">
+              <option value="Hadir">Hadir</option>
+              <option value="Izin">Izin</option>
+              <option value="Sakit">Sakit</option>
+              <option value="Alpa">Alpa</option>
+            </select>
+          </div>
+          <div>
+            <label>Sikap/Perilaku</label>
+            <select id="sikapInput">
+              <option value="Baik">Baik</option>
+              <option value="Cukup">Cukup</option>
+              <option value="Perlu Perhatian">Perlu Perhatian</option>
+            </select>
+          </div>
+        </div>
+
+        <label>Catatan Sikap (opsional)</label>
+        <textarea id="catatanSikapInput" placeholder="Contoh: aktif di kelas, kurang fokus, dsb."></textarea>
+
+        <label>Catatan Akademik (opsional)</label>
+        <textarea id="akademikInput" placeholder="Contoh: nilai ulangan, tugas belum dikumpulkan, dsb."></textarea>
+
+        <div class="grid2">
+          <div>
+            <label>Jenis Pelanggaran (opsional)</label>
+            <input type="text" id="pelanggaranInput" placeholder="Contoh: terlambat, atribut tidak lengkap">
+          </div>
+          <div>
+            <label>Poin Pelanggaran</label>
+            <input type="number" id="poinInput" value="0" min="0">
+          </div>
+        </div>
+
+        <label>Catatan Bebas (opsional)</label>
+        <textarea id="catatanBebasInput" placeholder="Catatan tambahan lainnya"></textarea>
+
+        <button class="btn" onclick="submitCatatan()">Simpan Catatan</button>
+        <div id="inputMsg"></div>
+      </div>
+    </div>
+
+    <!-- TAB RIWAYAT -->
+    <div id="riwayatTab" class="tabview" style="display:none;">
+      <div class="card">
+        <h2>Riwayat Catatan Kelas</h2>
+        <label>Kelas</label>
+        <select id="riwayatKelasSelect" onchange="loadRiwayatKelas()"></select>
+        <div id="riwayatList"></div>
+      </div>
+    </div>
+
+    <!-- TAB REKAP PELANGGARAN (BK & WAKA Kesiswaan) -->
+    <div id="rekapTab" class="tabview" style="display:none;">
+      <div class="card">
+        <h2>Rekap Pelanggaran Siswa</h2>
+        <label>Filter Kelas (kosongkan untuk semua kelas)</label>
+        <select id="rekapKelasSelect" onchange="loadRekapPelanggaran()">
+          <option value="">Semua Kelas</option>
+        </select>
+        <div id="rekapList"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ================== KONFIGURASI ==================
+// GANTI dengan URL Web App Google Apps Script hasil deploy
+const API_URL = "GANTI_DENGAN_URL_WEB_APP_APPS_SCRIPT";
+// ===================================================
+
+let currentGuru = null;
+
+function apiCall(payload) {
+  return fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  })
+  .then(res => res.json())
+  .catch(err => {
+    return { success: false, message: "Gagal terhubung ke server. Cek koneksi internet Anda." };
+  });
+}
+
+function showMsg(elId, text, type) {
+  const el = document.getElementById(elId);
+  el.innerHTML = `<div class="msg ${type}">${text}</div>`;
+  setTimeout(() => { el.innerHTML = ""; }, 4000);
+}
+
+function setView(viewId) {
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  document.getElementById(viewId).classList.add("active");
+}
+
+// ---------- LOGIN ----------
+function login() {
+  const username = document.getElementById("loginUsername").value.trim();
+  const password = document.getElementById("loginPassword").value.trim();
+  if (!username || !password) {
+    showMsg("loginMsg", "Username dan password wajib diisi.", "error");
+    return;
+  }
+  showMsg("loginMsg", "Sedang memproses...", "success");
+  apiCall({ action: "login", username, password }).then(res => {
+    if (res.success) {
+      currentGuru = res.guru;
+      const roleLabel = { WaliKelas: "Wali Kelas", BK: "Guru BK", WakaKesiswaan: "WAKA Kesiswaan" }[currentGuru.role] || currentGuru.role;
+      document.getElementById("guruNameLabel").textContent = `👤 ${currentGuru.nama} (${roleLabel})`;
+      document.getElementById("userInfo").style.display = "flex";
+      document.getElementById("rekapTabBtn").style.display = currentGuru.aksesSemuaKelas ? "block" : "none";
+      populateKelasSelects();
+      setView("appView");
+    } else {
+      showMsg("loginMsg", res.message || "Login gagal.", "error");
+    }
+  });
+}
+
+function logout() {
+  currentGuru = null;
+  document.getElementById("userInfo").style.display = "none";
+  document.getElementById("loginUsername").value = "";
+  document.getElementById("loginPassword").value = "";
+  setView("loginView");
+}
+
+function backToLogin() {
+  setView("loginView");
+}
+
+function populateKelasSelects() {
+  const kelasSelect = document.getElementById("kelasSelect");
+  const riwayatKelasSelect = document.getElementById("riwayatKelasSelect");
+  const rekapKelasSelect = document.getElementById("rekapKelasSelect");
+  kelasSelect.innerHTML = "";
+  riwayatKelasSelect.innerHTML = "";
+
+  document.getElementById("tanggalInput").valueAsDate = new Date();
+
+  if (currentGuru.aksesSemuaKelas) {
+    // Guru BK / WAKA Kesiswaan: ambil semua kelas dari data siswa
+    apiCall({ action: "getAllKelas" }).then(res => {
+      const kelasList = res.success ? res.data : [];
+      kelasList.forEach(k => {
+        kelasSelect.innerHTML += `<option value="${k}">${k}</option>`;
+        riwayatKelasSelect.innerHTML += `<option value="${k}">${k}</option>`;
+        rekapKelasSelect.innerHTML += `<option value="${k}">${k}</option>`;
+      });
+      loadSiswaKelas();
+      loadRiwayatKelas();
+      if (currentGuru.aksesSemuaKelas) loadRekapPelanggaran();
+    });
+  } else {
+    // Wali Kelas: hanya kelas yang diampu
+    currentGuru.kelasWali.forEach(k => {
+      kelasSelect.innerHTML += `<option value="${k}">${k}</option>`;
+      riwayatKelasSelect.innerHTML += `<option value="${k}">${k}</option>`;
+    });
+    loadSiswaKelas();
+    loadRiwayatKelas();
+  }
+}
+
+// ---------- TABS ----------
+function switchTab(tabId) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".tabview").forEach(t => (t.style.display = "none"));
+  document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add("active");
+  document.getElementById(tabId).style.display = "block";
+}
+
+// ---------- INPUT CATATAN ----------
+function loadSiswaKelas() {
+  const kelas = document.getElementById("kelasSelect").value;
+  const siswaSelect = document.getElementById("siswaSelect");
+  siswaSelect.innerHTML = `<option>Memuat...</option>`;
+  apiCall({ action: "getSiswaByKelas", kelas }).then(res => {
+    siswaSelect.innerHTML = "";
+    if (res.success && res.data.length > 0) {
+      res.data.forEach(s => {
+        siswaSelect.innerHTML += `<option value="${s.NISN}" data-nama="${s.Nama}">${s.Nama} (${s.NISN})</option>`;
+      });
+    } else {
+      siswaSelect.innerHTML = `<option value="">Tidak ada siswa di kelas ini</option>`;
+    }
+  });
+}
+
+function submitCatatan() {
+  const siswaSelect = document.getElementById("siswaSelect");
+  const nisn = siswaSelect.value;
+  const namaSiswa = siswaSelect.options[siswaSelect.selectedIndex]
+    ? siswaSelect.options[siswaSelect.selectedIndex].dataset.nama
+    : "";
+
+  if (!nisn) {
+    showMsg("inputMsg", "Pilih siswa terlebih dahulu.", "error");
+    return;
+  }
+
+  const payload = {
+    action: "addCatatan",
+    nisn,
+    namaSiswa,
+    kelas: document.getElementById("kelasSelect").value,
+    tanggal: document.getElementById("tanggalInput").value,
+    kehadiran: document.getElementById("kehadiranInput").value,
+    sikap: document.getElementById("sikapInput").value,
+    catatanSikap: document.getElementById("catatanSikapInput").value,
+    akademik: document.getElementById("akademikInput").value,
+    pelanggaran: document.getElementById("pelanggaranInput").value,
+    poinPelanggaran: document.getElementById("poinInput").value || 0,
+    catatanBebas: document.getElementById("catatanBebasInput").value,
+    guru: currentGuru.nama
+  };
+
+  showMsg("inputMsg", "Menyimpan...", "success");
+  apiCall(payload).then(res => {
+    if (res.success) {
+      showMsg("inputMsg", "Catatan berhasil disimpan.", "success");
+      document.getElementById("catatanSikapInput").value = "";
+      document.getElementById("akademikInput").value = "";
+      document.getElementById("pelanggaranInput").value = "";
+      document.getElementById("poinInput").value = 0;
+      document.getElementById("catatanBebasInput").value = "";
+    } else {
+      showMsg("inputMsg", res.message || "Gagal menyimpan.", "error");
+    }
+  });
+}
+
+// ---------- RIWAYAT KELAS ----------
+function loadRiwayatKelas() {
+  const kelas = document.getElementById("riwayatKelasSelect").value;
+  const listEl = document.getElementById("riwayatList");
+  listEl.innerHTML = `<div class="loading">Memuat riwayat...</div>`;
+  apiCall({ action: "getCatatanByKelas", kelas }).then(res => {
+    if (res.success && res.data.length > 0) {
+      listEl.innerHTML = res.data.map(c => renderCatatanItem(c, true)).join("");
+    } else {
+      listEl.innerHTML = `<div class="empty">Belum ada catatan untuk kelas ini.</div>`;
+    }
+  });
+}
+
+function renderCatatanItem(c, withDelete) {
+  const badgeClass = String(c.Kehadiran || "").toLowerCase();
+  let html = `<div class="catatan-item">
+    <div class="row-top">
+      <span class="tanggal">${formatTanggal(c.Tanggal)} — ${c.NamaSiswa || ""}</span>
+      ${withDelete ? `<button class="btn danger" onclick="hapusCatatan('${c.ID}')">Hapus</button>` : ""}
+    </div>
+    <div><span class="badge ${badgeClass}">${c.Kehadiran || "-"}</span><span class="badge">${c.Sikap || "-"}</span></div>`;
+  if (c.CatatanSikap) html += `<div class="field"><b>Catatan Sikap:</b> ${c.CatatanSikap}</div>`;
+  if (c.Akademik) html += `<div class="field"><b>Akademik:</b> ${c.Akademik}</div>`;
+  if (c.Pelanggaran) html += `<div class="field"><b>Pelanggaran:</b> ${c.Pelanggaran} (Poin: ${c.PoinPelanggaran || 0})</div>`;
+  if (c.CatatanBebas) html += `<div class="field"><b>Catatan:</b> ${c.CatatanBebas}</div>`;
+  html += `<div class="field"><b>Dicatat oleh:</b> ${c.Guru || "-"}</div></div>`;
+  return html;
+}
+
+function hapusCatatan(id) {
+  if (!confirm("Hapus catatan ini?")) return;
+  apiCall({ action: "deleteCatatan", id }).then(res => {
+    if (res.success) {
+      loadRiwayatKelas();
+    } else {
+      alert(res.message || "Gagal menghapus.");
+    }
+  });
+}
+
+function formatTanggal(tgl) {
+  if (!tgl) return "-";
+  const d = new Date(tgl);
+  if (isNaN(d)) return tgl;
+  return d.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
+}
+
+// ---------- REKAP PELANGGARAN (BK & WAKA Kesiswaan) ----------
+function loadRekapPelanggaran() {
+  const kelas = document.getElementById("rekapKelasSelect").value;
+  const listEl = document.getElementById("rekapList");
+  listEl.innerHTML = `<div class="loading">Memuat rekap...</div>`;
+  apiCall({ action: "getRekapPelanggaran", kelas }).then(res => {
+    if (res.success && res.data.length > 0) {
+      listEl.innerHTML = res.data.map(r => `
+        <div class="catatan-item">
+          <div class="row-top">
+            <span class="tanggal">${r.nama} — ${r.kelas} (NISN: ${r.nisn})</span>
+            <span class="badge alpa">Total Poin: ${r.totalPoin}</span>
+          </div>
+          <div class="field"><b>Jumlah Kejadian:</b> ${r.jumlahKejadian}</div>
+          <div class="field"><b>Rincian:</b> ${r.rincian.map(x => `${formatTanggal(x.tanggal)}: ${x.pelanggaran} (${x.poin} poin)`).join("; ")}</div>
+        </div>
+      `).join("");
+    } else {
+      listEl.innerHTML = `<div class="empty">Belum ada catatan pelanggaran.</div>`;
+    }
+  });
+}
+
+// ---------- VIEW ORTU (tanpa login) ----------
+function showOrtuView() {
+  setView("ortuView");
+}
+
+function cariCatatanOrtu() {
+  const nisn = document.getElementById("ortuNisn").value.trim();
+  if (!nisn) {
+    showMsg("ortuMsg", "Masukkan NISN terlebih dahulu.", "error");
+    return;
+  }
+  showMsg("ortuMsg", "Mencari...", "success");
+  apiCall({ action: "getCatatanBySiswa", nisn }).then(res => {
+    const resultCard = document.getElementById("ortuResultCard");
+    const listEl = document.getElementById("ortuCatatanList");
+    if (res.success && res.data.length > 0) {
+      document.getElementById("ortuNamaSiswa").textContent = "Riwayat: " + res.data[0].NamaSiswa;
+      listEl.innerHTML = res.data.map(c => renderCatatanItem(c, false)).join("");
+      resultCard.style.display = "block";
+    } else {
+      resultCard.style.display = "none";
+      showMsg("ortuMsg", "Tidak ada catatan ditemukan untuk NISN tersebut.", "error");
+    }
+  });
+}
+</script>
+
+</body>
+</html>
